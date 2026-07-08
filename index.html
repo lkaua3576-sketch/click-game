@@ -1,0 +1,157 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CosmoClicker: O Despertar do Buraco Negro</title>
+    <style>
+        /* --- ESTILIZAÇÃO (CSS) --- */
+        body {
+            background-color: #0b0b1a;
+            color: #ffffff;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            height: 100vh;
+            margin: 0;
+            overflow: hidden;
+        }
+
+        #game-container {
+            text-align: center;
+            background: rgba(255, 255, 255, 0.05);
+            padding: 30px;
+            border-radius: 20px;
+            box-shadow: 0 0 20px rgba(100, 50, 255, 0.2);
+        }
+
+        /* O Buraco Negro */
+        #black-hole {
+            width: 150px;
+            height: 150px;
+            background: radial-gradient(circle, #000000 60%, #4a154b, #6b11ff);
+            border-radius: 50%;
+            margin: 20px auto;
+            cursor: pointer;
+            box-shadow: 0 0 30px #6b11ff;
+            transition: transform 0.1s ease;
+        }
+
+        #black-hole:active {
+            transform: scale(0.95);
+            box-shadow: 0 0 50px #9d4edd;
+        }
+
+        h1 {
+            font-size: 2rem;
+            margin-bottom: 5px;
+            color: #a855f7;
+        }
+
+        .score-container {
+            font-size: 1.2rem;
+            margin-bottom: 20px;
+        }
+
+        .btn-upgrade {
+            background-color: #2563eb;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            font-size: 1rem;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: background 0.2s;
+        }
+
+        .btn-upgrade:hover {
+            background-color: #1d4ed8;
+        }
+
+        .btn-upgrade:disabled {
+            background-color: #4b5563;
+            cursor: not-allowed;
+        }
+    </style>
+</head>
+<body>
+
+    <div id="game-container">
+        <h1>CosmoClicker</h1>
+        <p>Absorva o universo, um clique de cada vez.</p>
+        
+        <div class="score-container">
+            <p>Massa: <strong id="mass-display">0</strong> AM</p>
+            <p>Por segundo: <span id="mps-display">0</span> MPS</p>
+        </div>
+
+        <div id="black-hole"></div>
+
+        <hr style="border: 0; border-top: 1px solid #374151; margin: 20px 0;">
+
+        <h3>Loja Espacial</h3>
+        <button id="upgrade-btn" class="btn-upgrade" disabled>
+            Poeira Estelar (Custo: 15 AM)
+        </button>
+    </div>
+
+    <script>
+        // Variáveis do Estado do Jogo
+        let mass = 0;
+        let massPerSecond = 0;
+        
+        // Configurações do Upgrade
+        let upgradeCost = 15;
+        let upgradePower = 0.5; // Quanto dá de MPS por compra
+
+        // Elementos do HTML que o JavaScript vai controlar
+        const blackHole = document.getElementById('black-hole');
+        const massDisplay = document.getElementById('mass-display');
+        const mpsDisplay = document.getElementById('mps-display');
+        const upgradeBtn = document.getElementById('upgrade-btn');
+
+        // 1. Função de Clique no Buraco Negro
+        blackHole.addEventListener('click', () => {
+            mass += 1;
+            updateUI();
+        });
+
+        // 2. Função de Comprar Upgrade
+        upgradeBtn.addEventListener('click', () => {
+            if (mass >= upgradeCost) {
+                mass -= upgradeCost;
+                massPerSecond += upgradePower;
+                
+                // Aumenta o custo do próximo upgrade em 15%
+                upgradeCost = Math.round(upgradeCost * 1.15); 
+                
+                updateUI();
+            }
+        });
+
+        // 3. Atualizar a Interface na Tela
+        function updateUI() {
+            massDisplay.textContent = Math.floor(mass);
+            mpsDisplay.textContent = massPerSecond.toFixed(1);
+            upgradeBtn.textContent = `Poeira Estelar (Custo: ${upgradeCost} AM)`;
+
+            // Habilita ou desabilita o botão se tiver massa suficiente
+            if (mass >= upgradeCost) {
+                upgradeBtn.disabled = false;
+            } else {
+                upgradeBtn.disabled = true;
+            }
+        }
+
+        // 4. Loop do Jogo (Roda a cada 100ms para atualizar o ganho por segundo)
+        setInterval(() => {
+            if (massPerSecond > 0) {
+                mass += massPerSecond / 10; // Divide por 10 porque roda 10 vezes por segundo (1000ms)
+                updateUI();
+            }
+        }, 100);
+    </script>
+</body>
+</html>
