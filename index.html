@@ -3,55 +3,79 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>CosmoClicker: Evolution</title>
+    <title>CosmoClicker: O Despertar do Buraco Negro</title>
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
-    <div id="big-bang-overlay"></div>
+
+    <div id="big-bang-overlay" class="hidden">
+        <div class="explosion-core"></div>
+        <h1 class="flash-text">💥 BIG BANG! 💥</h1>
+        <p class="flash-sub">O Universo renasceu 1.5x mais forte!</p>
+    </div>
 
     <div id="game-container">
         <h1>CosmoClicker</h1>
-        <p class="subtitle">O universo colapsa e renasce sob seu comando.</p>
+        <p class="subtitle">Absorva o universo, um clique de cada vez.</p>
         
         <div class="score-container">
-            <p style="font-size: 1.4rem;">Massa: <strong id="mass-display" style="color: #e9d5ff;">0</strong> AM</p>
-            <p>Por segundo: <span id="mps-display" style="color: #a7f3d0;">0</span> MPS</p>
-            <p>Poder do Clique: <span id="click-display" style="color: #60a5fa;">1</span> AM</p>
+            <p style="font-size: 1.4rem;">Massa: <strong id="mass-display">0</strong> AM</p>
+            <p>Por segundo (MPS): <span id="mps-display">0</span></p>
+            <p>Por clique (MPC): <span id="mpc-display">1</span></p>
             <p style="font-size: 0.9rem; color: #f472b6; margin-top: 8px;">
-                Bônus de Reinício: <span id="multiplier-display">1.0</span>x
+                Multiplicador Cósmico: <span id="multiplier-display">1.0</span>x
             </p>
         </div>
 
         <div id="black-hole"></div>
 
-        <h3 class="shop-title">Melhorar Cliques</h3>
-        <div class="shop-container">
-            <button id="click-up1-btn" class="btn-upgrade click-upgrade" disabled>
-                <span>🔍 Lente Gravitacional (+1 por clique)</span>
-                <span class="cost" id="cUp1-cost">50 AM</span>
-            </button>
-            <button id="click-up2-btn" class="btn-upgrade click-upgrade" disabled>
-                <span>⚡ Pulso de Antimatéria (+5 por clique)</span>
-                <span class="cost" id="cUp2-cost">500 AM</span>
-            </button>
+        <div class="shop-tabs">
+            <h3 style="color: #9333ea; margin: 0;">Loja Espacial</h3>
         </div>
 
-        <h3 class="shop-title">Produção Automática</h3>
         <div class="shop-container">
-            <button id="up3-btn" class="btn-upgrade" disabled>
-                <span>☄️ Aspirador (+12 MPS)</span>
-                <span class="cost" id="up3-cost">1.100 AM</span>
+            <div class="section-title">✨ Upgrades de Clique</div>
+            <button id="click1-btn" class="btn-upgrade" disabled>
+                <span>Mão Gravitacional (+2 por clique)</span>
+                <span class="cost" id="click1-cost">50 AM</span>
             </button>
-            <button id="up4-btn" class="btn-upgrade gold-upgrade" disabled>
-                <span>🌟 Devorador de Estrelas (+25 MPS)</span>
-                <span class="cost" id="up4-cost">5.000 AM</span>
+            <button id="click2-btn" class="btn-upgrade" disabled>
+                <span>Fenda Temporal (+5 por clique)</span>
+                <span class="cost" id="click2-cost">250 AM</span>
             </button>
-        </div>
 
-        <div id="prestige-section">
-            <p id="prestige-requirement">Meta: 50.000 AM para o Big Bang</p>
-            <button id="prestige-btn" class="btn-prestige" disabled>
-                CAUSAR BIG BANG
+            <div class="section-title">🛸 Automação Cósmica</div>
+            <button id="auto1-btn" class="btn-upgrade" disabled>
+                <span>🪐 Poeira Estelar (+0.2 MPS)</span>
+                <span class="cost" id="auto1-cost">15 AM</span>
+            </button>
+            <button id="auto2-btn" class="btn-upgrade" disabled>
+                <span>🛰️ Satélite Antigo (+1.5 MPS)</span>
+                <span class="cost" id="auto2-cost">100 AM</span>
+            </button>
+            <button id="auto3-btn" class="btn-upgrade" disabled>
+                <span>☄️ Aspirador de Cometas (+12 MPS)</span>
+                <span class="cost" id="auto3-cost">1.100 AM</span>
+            </button>
+            <button id="auto4-btn" class="btn-upgrade" disabled>
+                <span>🚀 Frota de Mineração (+50 MPS)</span>
+                <span class="cost" id="auto4-cost">8.000 AM</span>
+            </button>
+            <button id="auto5-btn" class="btn-upgrade" disabled>
+                <span>🌑 Devorador de Luas (+250 MPS)</span>
+                <span class="cost" id="auto5-cost">45.000 AM</span>
+            </button>
+            <button id="auto6-btn" class="btn-upgrade" disabled>
+                <span>🌟 Estrela de Nêutrons (+1.200 MPS)</span>
+                <span class="cost" id="auto6-cost">200.000 AM</span>
+            </button>
+            <button id="auto7-btn" class="btn-upgrade" disabled>
+                <span>🌌 Nebulosa de Plasma (+6.500 MPS)</span>
+                <span class="cost" id="auto7-cost">1.500.000 AM</span>
+            </button>
+            <button id="auto8-btn" class="btn-upgrade" disabled>
+                <span>👑 Supernova Reversa (+35.000 MPS)</span>
+                <span class="cost" id="auto8-cost">10.000.000 AM</span>
             </button>
         </div>
     </div>
