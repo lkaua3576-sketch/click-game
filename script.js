@@ -1,119 +1,87 @@
-// Estado do Jogo (Dados salvos temporariamente na memória)
+// VARIÁVEIS DE ESTADO
 let mass = 0;
 let baseMps = 0;
-let darkMatter = 0;
+let clickPower = 1;
+let prestigeCount = 0;
 let totalMultiplier = 1.0;
 
-// Configuração dos Upgrades [Custo Inicial, Poder Base de MPS]
-let up1 = { cost: 15, power: 0.2 };
-let up2 = { cost: 100, power: 1.5 };
-let up3 = { cost: 1100, power: 12.0 };
+// CONFIGURAÇÃO DOS UPGRADES
+let up3 = { cost: 1100, power: 12 };
+let up4 = { cost: 5000, power: 25 }; // O NOVO!
+let cUp1 = { cost: 50, power: 1 };
+let cUp2 = { cost: 500, power: 5 };
 
-// Capturando elementos do HTML para o JavaScript poder modificar
+// ELEMENTOS
 const blackHole = document.getElementById('black-hole');
 const massDisplay = document.getElementById('mass-display');
 const mpsDisplay = document.getElementById('mps-display');
+const clickDisplay = document.getElementById('click-display');
 const multiplierDisplay = document.getElementById('multiplier-display');
-
-const up1Btn = document.getElementById('up1-btn');
-const up1CostTxt = document.getElementById('up1-cost');
-const up2Btn = document.getElementById('up2-btn');
-const up2CostTxt = document.getElementById('up2-cost');
-const up3Btn = document.getElementById('up3-btn');
-const up3CostTxt = document.getElementById('up3-cost');
-
+const bangOverlay = document.getElementById('big-bang-overlay');
 const prestigeBtn = document.getElementById('prestige-btn');
 
-// --- SISTEMA DE CLIQUE ---
+// CLIQUE NO BURACO NEGRO
 blackHole.addEventListener('click', () => {
-    mass += 1 * totalMultiplier;
+    mass += clickPower * totalMultiplier;
     updateUI();
 });
 
-// --- COMPRA DE UPGRADES ---
-up1Btn.addEventListener('click', () => {
-    if (mass >= up1.cost) {
-        mass -= up1.cost;
-        baseMps += up1.power;
-        up1.cost = Math.round(up1.cost * 1.15);
+// COMPRAS PRODUÇÃO
+document.getElementById('up3-btn').addEventListener('click', () => buyProduction(up3));
+document.getElementById('up4-btn').addEventListener('click', () => buyProduction(up4));
+
+// COMPRAS CLIQUE
+document.getElementById('click-up1-btn').addEventListener('click', () => buyClick(cUp1));
+document.getElementById('click-up2-btn').addEventListener('click', () => buyClick(cUp2));
+
+function buyProduction(upg) {
+    if (mass >= upg.cost) {
+        mass -= upg.cost;
+        baseMps += upg.power;
+        upg.cost = Math.round(upg.cost * 1.2);
         updateUI();
     }
-});
+}
 
-up2Btn.addEventListener('click', () => {
-    if (mass >= up2.cost) {
-        mass -= up2.cost;
-        baseMps += up2.power;
-        up2.cost = Math.round(up2.cost * 1.18);
+function buyClick(upg) {
+    if (mass >= upg.cost) {
+        mass -= upg.cost;
+        clickPower += upg.power;
+        upg.cost = Math.round(upg.cost * 2.5);
         updateUI();
     }
-});
+}
 
-up3Btn.addEventListener('click', () => {
-    if (mass >= up3.cost) {
-        mass -= up3.cost;
-        baseMps += up3.power;
-        up3.cost = Math.round(up3.cost * 1.22);
-        updateUI();
-    }
-});
-
-// --- SISTEMA DE PRESTÍGIO (BIG CRUNCH) ---
+// LÓGICA DO BIG BANG (PRESTÍGIO)
 prestigeBtn.addEventListener('click', () => {
-    let pendingDarkMatter = calculateDarkMatter();
-    if (pendingDarkMatter > 0) {
-        darkMatter += pendingDarkMatter;
-        
-        // Reseta o progresso atual do universo
-        mass = 0;
-        baseMps = 0;
-        up1.cost = 15;
-        up2.cost = 100;
-        up3.cost = 1100;
-        
-        // Cada Matéria Escura dá +10% de produção global
-        totalMultiplier = 1 + (darkMatter * 0.1);
-        
-        updateUI();
-        alert(`🌌 Big Crunch realizado! O universo resetou, mas você evoluiu e ganhou +${pendingDarkMatter} Matéria Escura!`);
+    if (mass >= 50000) {
+        // Ativar Explosão Visual
+        bangOverlay.classList.add('explosao-ativa');
+
+        setTimeout(() => {
+            // Resetar Valores
+            prestigeCount++;
+            totalMultiplier = 1.0 + (prestigeCount * 1.0); // Aumenta 1.0 por reinício
+            
+            mass = 0;
+            baseMps = 0;
+            clickPower = 1;
+
+            // Resetar Custos
+            up3.cost = 1100;
+            up4.cost = 5000;
+            cUp1.cost = 50;
+            cUp2.cost = 500;
+
+            updateUI();
+            
+            // Remover Explosão
+            setTimeout(() => {
+                bangOverlay.classList.remove('explosao-ativa');
+            }, 500);
+        }, 600);
     }
 });
 
-function calculateDarkMatter() {
-    if (mass < 50000) return 0;
-    return Math.floor(Math.sqrt(mass / 50000));
-}
-
-// --- ATUALIZAÇÃO DA INTERFACE (UI) ---
+// ATUALIZAR TELA
 function updateUI() {
-    massDisplay.textContent = Math.floor(mass).toLocaleString('pt-BR');
-    let currentMps = baseMps * totalMultiplier;
-    mpsDisplay.textContent = currentMps.toFixed(1);
-    multiplierDisplay.textContent = totalMultiplier.toFixed(1);
-
-    up1CostTxt.textContent = `${up1.cost} AM`;
-    up2CostTxt.textContent = `${up2.cost} AM`;
-    up3CostTxt.textContent = `${up3.cost} AM`;
-
-    up1Btn.disabled = mass < up1.cost;
-    up2Btn.disabled = mass < up2.cost;
-    up3Btn.disabled = mass < up3.cost;
-
-    let pendingDM = calculateDarkMatter();
-    if (pendingDM > 0) {
-        prestigeBtn.disabled = false;
-        prestigeBtn.textContent = `Causar Big Crunch (+${pendingDM} Matéria Escura)`;
-    } else {
-        prestigeBtn.disabled = true;
-        prestigeBtn.textContent = `Causar Big Crunch (+0 Matéria Escura)`;
-    }
-}
-
-// --- LOOP TEMPORAL (Roda a cada 100ms para adicionar a fração de MPS) ---
-setInterval(() => {
-    let currentMps = baseMps * totalMultiplier;
-    if (currentMps > 0) {
-        mass += currentMps / 10;
-        updateUI();
-    }
-}, 100);
