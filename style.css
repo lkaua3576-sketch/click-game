@@ -1,104 +1,178 @@
 body {
     background-color: #050510;
     color: #ffffff;
-    font-family: 'Segoe UI', sans-serif;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
     display: flex;
-    justify-content: center;
+    flex-direction: column;
     align-items: center;
+    justify-content: center;
     min-height: 100vh;
     margin: 0;
+    padding: 20px;
+    box-sizing: border-box;
     overflow-x: hidden;
 }
 
 #game-container {
     text-align: center;
-    background: rgba(10, 10, 25, 0.9);
+    background: rgba(15, 15, 35, 0.8);
     padding: 25px;
     border-radius: 20px;
-    box-shadow: 0 0 40px rgba(100, 50, 255, 0.2);
-    width: 450px;
-    z-index: 10;
-}
-
-/* Animação Big Bang */
-#big-bang-overlay {
-    position: fixed;
-    top: 0;
-    left: 0;
+    box-shadow: 0 0 30px rgba(107, 17, 255, 0.3);
+    max-width: 480px;
     width: 100%;
-    height: 100%;
-    background-color: white;
-    opacity: 0;
-    pointer-events: none;
-    z-index: 9999;
-    transition: opacity 0.5s ease-out;
 }
 
-.explosao-ativa {
-    opacity: 1 !important;
+h1 {
+    font-size: 2.3rem;
+    margin: 0 0 5px 0;
+    color: #a855f7;
+    text-shadow: 0 0 10px rgba(168, 85, 247, 0.5);
 }
 
+.subtitle {
+    color: #9ca3af;
+    margin-top: 0;
+    font-size: 0.9rem;
+}
+
+.score-container {
+    background: rgba(255, 255, 255, 0.03);
+    padding: 12px;
+    border-radius: 12px;
+    margin-bottom: 20px;
+    border: 1px solid rgba(255, 255, 255, 0.05);
+}
+
+.score-container p {
+    margin: 4px 0;
+}
+
+#mass-display { color: #e9d5ff; }
+#mps-display { color: #a7f3d0; }
+#mpc-display { color: #60a5fa; }
+
+/* O Buraco Negro */
 #black-hole {
     width: 140px;
     height: 140px;
-    background: radial-gradient(circle, #000 50%, #3b0764, #7c3aed);
+    background: radial-gradient(circle, #000000 55%, #3b0764, #6b11ff);
     border-radius: 50%;
     margin: 20px auto;
     cursor: pointer;
-    box-shadow: 0 0 30px #7c3aed;
-    transition: transform 0.05s;
+    box-shadow: 0 0 35px #6b11ff, inset 0 0 20px rgba(0,0,0,0.8);
+    transition: transform 0.05s ease, box-shadow 0.1s ease;
 }
 
-#black-hole:active { transform: scale(0.9); }
-
-.score-container {
-    background: rgba(255,255,255,0.05);
-    padding: 15px;
-    border-radius: 15px;
-    margin-bottom: 20px;
+#black-hole:active {
+    transform: scale(0.92);
+    box-shadow: 0 0 55px #d946ef;
 }
 
-.shop-title {
-    font-size: 1rem;
-    color: #a78bfa;
+/* Loja e Seções */
+.shop-container {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    margin-top: 10px;
+    max-height: 280px;
+    overflow-y: auto;
+    padding-right: 5px;
+}
+
+.section-title {
     text-align: left;
-    margin: 15px 0 8px 0;
-    border-left: 3px solid #7c3aed;
-    padding-left: 10px;
+    font-size: 0.85rem;
+    color: #9ca3af;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    margin: 10px 0 2px 0;
 }
-
-.shop-container { display: flex; flex-direction: column; gap: 8px; }
 
 .btn-upgrade {
-    background: #1e1e38;
-    color: #ccc;
-    border: 1px solid #333;
-    padding: 10px;
+    background: linear-gradient(135deg, #1e40af, #3b82f6);
+    color: white;
+    border: none;
+    padding: 10px 12px;
+    font-size: 0.9rem;
     border-radius: 8px;
     cursor: pointer;
     display: flex;
     justify-content: space-between;
-    font-size: 0.85rem;
+    align-items: center;
+    transition: all 0.2s;
 }
 
-.btn-upgrade:not(:disabled) { background: #2d2d5a; color: white; border-color: #5b5baf; }
+.btn-upgrade:hover:not(:disabled) {
+    transform: translateY(-1px);
+    box-shadow: 0 4px 10px rgba(59, 130, 246, 0.3);
+}
 
-.click-upgrade:not(:disabled) { border-color: #3b82f6; box-shadow: 0 0 10px rgba(59, 130, 246, 0.2); }
+.btn-upgrade:disabled {
+    background: #1f2937;
+    color: #4b5563;
+    cursor: not-allowed;
+}
 
-.gold-upgrade:not(:disabled) { border-color: #fbbf24; color: #fbbf24; }
-
-.btn-prestige {
-    width: 100%;
-    padding: 15px;
-    background: linear-gradient(45deg, #ff00ff, #00ffff);
-    border: none;
-    border-radius: 10px;
+.btn-upgrade .cost {
     font-weight: bold;
-    cursor: pointer;
-    margin-top: 15px;
-    letter-spacing: 2px;
+    background: rgba(0, 0, 0, 0.2);
+    padding: 3px 6px;
+    border-radius: 5px;
 }
 
-.btn-prestige:disabled { filter: grayscale(1); opacity: 0.3; cursor: not-allowed; }
+/* --- TELA E ANIMAÇÃO DO BIG BANG --- */
+#big-bang-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    background-color: #ffffff;
+    z-index: 9999;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    transition: opacity 1s ease;
+}
 
-.subtitle { color: #888; font-size: 0.8rem; margin-top: -10px; }
+.hidden {
+    opacity: 0;
+    pointer-events: none;
+}
+
+.explosion-core {
+    width: 10px;
+    height: 10px;
+    background: #fff;
+    border-radius: 50%;
+    box-shadow: 0 0 100px 50px #fff, 0 0 200px 100px #a855f7, 0 0 300px 150px #3b82f6;
+    animation: blast 1.5s ease-out forwards;
+}
+
+.flash-text {
+    color: #000;
+    font-size: 3rem;
+    margin-top: 30px;
+    opacity: 0;
+    animation: fadeInText 1s 0.5s ease-out forwards;
+}
+
+.flash-sub {
+    color: #333;
+    font-size: 1.2rem;
+    margin: 0;
+    opacity: 0;
+    animation: fadeInText 1s 0.8s ease-out forwards;
+}
+
+@keyframes blast {
+    0% { transform: scale(1); background: #fff; }
+    50% { transform: scale(100); background: #ff007f; opacity: 1; }
+    100% { transform: scale(300); background: #050510; opacity: 0; }
+}
+
+@keyframes fadeInText {
+    to { opacity: 1; }
+}
